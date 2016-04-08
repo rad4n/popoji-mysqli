@@ -97,9 +97,9 @@ elseif ($mod=='comment' AND $act=='setting1'){
 		$dbusersql = DATABASE_USER;
 		$dbpasswordsql = DATABASE_PASS;
 		$dbnamesql = DATABASE_NAME;
-		$connection = mysql_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysql_error());
-		mysql_select_db($dbnamesql, $connection) or die(mysql_error());
-		mysql_query("ALTER TABLE comment ALTER COLUMN active SET DEFAULT 'Y'");
+		$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
+		mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+		mysqli_query("ALTER TABLE comment ALTER COLUMN active SET DEFAULT 'Y'");
 		header('location:../../admin.php?mod='.$mod);
 	}else{
 		header('location:../../404.php');
@@ -113,9 +113,9 @@ elseif ($mod=='comment' AND $act=='setting2'){
 		$dbusersql = DATABASE_USER;
 		$dbpasswordsql = DATABASE_PASS;
 		$dbnamesql = DATABASE_NAME;
-		$connection = mysql_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysql_error());
-		mysql_select_db($dbnamesql, $connection) or die(mysql_error());
-		mysql_query("ALTER TABLE comment ALTER COLUMN active SET DEFAULT 'N'");
+		$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
+		mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+		mysqli_query("ALTER TABLE comment ALTER COLUMN active SET DEFAULT 'N'");
 		header('location:../../admin.php?mod='.$mod);
 	}else{
 		header('location:../../404.php');

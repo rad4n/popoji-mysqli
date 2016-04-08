@@ -28,12 +28,12 @@ if ($mod=='component' AND $act=='delete'){
 			$dbusersql = DATABASE_USER;
 			$dbpasswordsql = DATABASE_PASS;
 			$dbnamesql = DATABASE_NAME;
-			$connection = mysql_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysql_error());
-			mysql_select_db($dbnamesql, $connection) or die(mysql_error());
+			$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
+			mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 			$dirPath = "../../po-component/$component";
 			$deletef = deleteDir($dirPath);
 			$queryf = "DROP TABLE IF EXISTS `$dbnamesql`.`$table_name`";
-			$resultf = mysql_query($queryf);
+			$resultf = mysqli_query($queryf);
 			$tabledel->deleteBy('id_component', $id);
 			header('location:../../admin.php?mod='.$mod);
 	}else{
@@ -122,10 +122,10 @@ elseif ($mod=='component' AND $act=='importtable'){
 				$dbusersql = DATABASE_USER;
 				$dbpasswordsql = DATABASE_PASS;
 				$dbnamesql = DATABASE_NAME;
-				$connection = mysql_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysql_error());
-				mysql_select_db($dbnamesql, $connection) or die(mysql_error());
+				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
+				mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 				foreach($sql_contents as $query){
-					$result = mysql_query($query);
+					$result = mysqli_query($query);
 					if (!$result){
 						unlink("../../../po-content/po-upload/$nama_file_unik");
 						header('location:../../admin.php?mod='.$mod);

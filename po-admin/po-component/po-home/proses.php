@@ -19,16 +19,16 @@ if ($mod2=='home' AND $act2=='backup'){
 		$dbusersql = DATABASE_USER;
 		$dbpasswordsql = DATABASE_PASS;
 		$dbnamesql = DATABASE_NAME;
-		$connection = mysql_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysql_error());
-		mysql_select_db($dbnamesql, $connection) or die(mysql_error());
+		$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
+		mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 
 		$tables = '*';
 
 			//get all of the tables
 			if($tables == '*'){
 				$tables = array();
-				$result = mysql_query('SHOW TABLES');
-				while($row = mysql_fetch_row($result))
+				$result = mysqli_query('SHOW TABLES');
+				while($row = mysqli_fetch_row($result))
 				{
 					$tables[] = $row[0];
 				}
@@ -38,15 +38,15 @@ if ($mod2=='home' AND $act2=='backup'){
 			
 			//cycle through
 			foreach($tables as $table){
-				$result = mysql_query('SELECT * FROM '.$table);
-				$num_fields = mysql_num_fields($result);
+				$result = mysqli_query('SELECT * FROM '.$table);
+				$num_fields = mysqli_num_fields($result);
 				
 				$return.= 'DROP TABLE IF EXISTS '.'`'.$table.'`'.';';
-				$row2 = mysql_fetch_row(mysql_query('SHOW CREATE TABLE `'.$table.'`'));
+				$row2 = mysqli_fetch_row(mysqli_query('SHOW CREATE TABLE `'.$table.'`'));
 				$return.= "\n\n".$row2[1].";\n\n";
 				
 				for ($i = 0; $i < $num_fields; $i++) {
-					while($row = mysql_fetch_row($result)){
+					while($row = mysqli_fetch_row($result)){
 						$return.= 'INSERT INTO `'.$table.'` VALUES(';
 						for($j=0; $j<$num_fields; $j++) {
 							$row[$j] = addslashes($row[$j]);
@@ -100,11 +100,11 @@ elseif ($mod=='home' AND $act=='restore'){
 				$dbusersql = DATABASE_USER;
 				$dbpasswordsql = DATABASE_PASS;
 				$dbnamesql = DATABASE_NAME;
-				$connection = mysql_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysql_error());
-				mysql_select_db($dbnamesql, $connection) or die(mysql_error());
+				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
+				mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 
 				foreach($sql_contents as $query){
-					$result = mysql_query($query);
+					$result = mysqli_query($query);
 					if (!$result){
 						unlink("../../../po-content/po-upload/$nama_file_unik");
 						header('location:../../admin.php?mod='.$mod);

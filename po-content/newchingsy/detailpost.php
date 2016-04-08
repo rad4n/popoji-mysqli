@@ -40,7 +40,7 @@
             $composts = $tabledcom->findAllLimitByAnd(id_comment, id_post, active, "$idpost", "Y", "ASC", "$posisi,$batas");
             $totaldcom = $tabledcom->numRowByAnd(id_post, $idpost, active, 'Y');
 
-            mysql_query("UPDATE post SET hits = $currentDetail->hits+1 WHERE id_post = '".$idpost."'");
+            mysqli_query("UPDATE post SET hits = $currentDetail->hits+1 WHERE id_post = '".$idpost."'");
         ?>
         <div class="page">
             <div class="row page_margin_top">

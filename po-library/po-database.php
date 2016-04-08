@@ -25,9 +25,9 @@ class PoSelect implements Iterator{
 	protected function _getQuery(){
 		if(!$this->_query){
 			$connection = PoConnect::getConnection();
-			$this->_query = mysql_query($this->_sql, $connection);
+			$this->_query = mysqli_query($connection,$this->_sql);
 			if(!$this->_query){
-				throw new Exception('Gagal membaca data dari database:'.mysql_error());
+				throw new Exception('Gagal membaca data dari database:'.mysqli_connect_error());
 			}
 		}
 		return $this->_query;
@@ -35,7 +35,7 @@ class PoSelect implements Iterator{
 
 	protected function _getNumResult(){
 		if(!$this->_numResult){
-			$this->_numResult = mysql_num_rows($this->_getQuery());
+			$this->_numResult = mysqli_num_rows($this->_getQuery());
 		}
 		return $this->_numResult;
 	}
@@ -51,7 +51,7 @@ class PoSelect implements Iterator{
 		if(isset($this->_results[$pointer])){
 			return $this->_results[$pointer];
 		}
-		$row = mysql_fetch_object($this->_getQuery());
+		$row = mysqli_fetch_object($this->_getQuery());
 		if($row){
 			$this->_results[$pointer] = $row;
 		}
@@ -71,7 +71,7 @@ class PoSelect implements Iterator{
 	}
 
 	function close(){
-		mysql_free_result($this->_getQuery());
+		mysqli_free_result($this->_getQuery());
 		PoConnect::close();
 	}
 
@@ -96,38 +96,38 @@ class PoTable {
 	function save(array $data){
 		$sql = "INSERT INTO ".$this->_tableName." SET";
 		foreach($data as $field => $value){
-			$sql .= " ".$field."='".mysql_real_escape_string($value, PoConnect::getConnection())."',";
+			$sql .= " ".$field."='".mysqli_real_escape_string(PoConnect::getConnection(),$value)."',";
 		}
 		$sql = rtrim($sql, ',');
-		$result = mysql_query($sql, PoConnect::getConnection());
+		$result = mysqli_query(PoConnect::getConnection(),$sql);
 		if(!$result){
-			throw new Exception('Gagal menyimpan data ke table '.$this->_tableName.': '.mysql_error());
+			throw new Exception('Gagal menyimpan data ke table '.$this->_tableName.': '.mysqli_error());
 		}
 	}
 
 	function update(array $data, $where = ''){
 		$sql = "UPDATE ".$this->_tableName." SET";
 		foreach($data as $field => $value){
-			$sql .= " ".$field."='".mysql_real_escape_string($value, PoConnect::getConnection())."',";
+			$sql .= " ".$field."='".mysqli_real_escape_string(PoConnect::getConnection(),$value)."',";
 		}
 		$sql = rtrim($sql, ',');
 		if($where){
 			$sql .= " WHERE ".$where;
 		}
-		$result = mysql_query($sql, PoConnect::getConnection());
+		$result = mysqli_query(PoConnect::getConnection(),$sql);
 		if(!$result){
-			throw new Exception('Gagal mengupdate data table '.$this->_tableName.': '.mysql_error());
+			throw new Exception('Gagal mengupdate data table '.$this->_tableName.': '.mysqli_connect_error());
 		}
 	}
 
 	function updateBy($field, $value, array $data){
-		$where = "".$field."='".mysql_real_escape_string($value, PoConnect::getConnection())."'";
+		$where = "".$field."='".mysqli_real_escape_string($value, PoConnect::getConnection())."'";
 		$this->update($data, $where);
 	}
 
 	function updateByAnd($field, $value, $field2, $value2, array $data){
-		$where = "".$field."='".mysql_real_escape_string($value)."'";
-		$where .= " AND ".$field2."='".mysql_real_escape_string($value2, PoConnect::getConnection())."'";
+		$where = "".$field."='".mysqli_real_escape_string(PoConnect::getConnection(),$value)."'";
+		$where .= " AND ".$field2."='".mysqli_real_escape_string(PoConnect::getConnection(),$value2)."'";
 		$this->update($data, $where);
 	}
 
@@ -136,9 +136,9 @@ class PoTable {
 		if($where){
 			$sql .= " WHERE ".$where;
 		}
-		$result = mysql_query($sql, PoConnect::getConnection());
+		$result = mysqli_query( PoConnect::getConnection(),$sql);
 		if(!$result){
-			throw new Exception('Gagal menghapus data dari table '.$this->_tableName.': '.mysql_error());
+			throw new Exception('Gagal menghapus data dari table '.$this->_tableName.': '.mysqli_error());
 		}
 	}
 
@@ -296,8 +296,8 @@ class PoTable {
 		$sql = "SELECT * FROM ".$this->_tableName."";
 		$sql .= " WHERE ".$field1."='".$value1."'";
 		$sql .= " GROUP BY ".$field2."";
-		$result = mysql_query($sql, PoConnect::getConnection());
-		$result = mysql_num_rows($result);
+		$result = mysqli_query( PoConnect::getConnection(),$sql);
+		$result = mysqli_num_rows($result);
 		return $result;
 	}
 
@@ -305,7 +305,7 @@ class PoTable {
 		$sql = "SELECT SUM(".$field1.") as ".$field2." FROM ".$this->_tableName."";
 		$sql .= " WHERE ".$field3."='".$value1."'";
 		$sql .= " GROUP BY ".$field4."";
-		$result = mysql_fetch_assoc(mysql_query($sql, PoConnect::getConnection()));
+		$result = mysqli_fetch_assoc(mysqli_query( PoConnect::getConnection(),$sql));
 		$result = $result[$field2];
 		return $result;
 	}
@@ -351,16 +351,16 @@ class PoTable {
 
 	function numRow(){
 		$sql = "SELECT * FROM ".$this->_tableName."";
-		$result = mysql_query($sql, PoConnect::getConnection());
-		$result = mysql_num_rows($result);
+		$result = mysqli_query( PoConnect::getConnection(),$sql);
+		$result = mysqli_num_rows($result);
 		return $result;
 	}
 
 	function numRowBy($field, $value){
 		$sql = "SELECT * FROM ".$this->_tableName."";
 		$sql .= " WHERE ".$field."='".$value."'";
-		$result = mysql_query($sql, PoConnect::getConnection());
-		$result = mysql_num_rows($result);
+		$result = mysqli_query( PoConnect::getConnection(),$sql);
+		$result = mysqli_num_rows($result);
 		return $result;
 	}
 	
@@ -368,8 +368,8 @@ class PoTable {
 		$sql = "SELECT * FROM ".$this->_tableName."";
 		$sql .= " WHERE ".$field."='".$value."'";
 		$sql .= " AND ".$field2."='".$value2."'";
-		$result = mysql_query($sql, PoConnect::getConnection());
-		$result = mysql_num_rows($result);
+		$result = mysqli_query(PoConnect::getConnection(),$sql);
+		$result = mysqli_num_rows($result);
 		return $result;
 	}
 
@@ -385,8 +385,8 @@ class PoTable {
 			}
 		}
 		$sql .= " AND active='Y' ORDER BY id_post DESC";
-		$result = mysql_query($sql, PoConnect::getConnection());
-		$result = mysql_num_rows($result);
+		$result = mysqli_query( PoConnect::getConnection(),$sql);
+		$result = mysqli_num_rows($result);
 		return $result;
 	}
 }
