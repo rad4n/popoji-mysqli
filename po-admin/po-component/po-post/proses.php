@@ -112,8 +112,8 @@ elseif ($mod=='post' AND $act=='input'){
 				$dbusersql = DATABASE_USER;
 				$dbpasswordsql = DATABASE_PASS;
 				$dbnamesql = DATABASE_NAME;
-				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
-				mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql,$dbnamesql) or die(mysqli_connect_error());
+				//mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 				mysqli_query("UPDATE tag SET count=count+1 WHERE tag_seo='$tag_seo[$i]'");
 			}
 			header('location:../../admin.php?mod='.$mod);
@@ -136,8 +136,8 @@ elseif ($mod=='post' AND $act=='input'){
 				$dbusersql = DATABASE_USER;
 				$dbpasswordsql = DATABASE_PASS;
 				$dbnamesql = DATABASE_NAME;
-				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
-				mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql,$dbnamesql) or die(mysqli_connect_error());
+				//mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 				mysqli_query("UPDATE tag SET count=count+1 WHERE tag_seo='$tag_seo[$i]'");
 			}
 			header('location:../../admin.php?mod='.$mod);
@@ -193,8 +193,8 @@ elseif ($mod=='post' AND $act=='update'){
 				$dbusersql = DATABASE_USER;
 				$dbpasswordsql = DATABASE_PASS;
 				$dbnamesql = DATABASE_NAME;
-				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
-				mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql,$dbnamesql) or die(mysqli_connect_error());
+				//mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 				mysqli_query("UPDATE tag SET count=count+1 WHERE tag_seo='$tag_seo[$i]'");
 			}
 			header('location:../../admin.php?mod='.$mod);
@@ -217,8 +217,8 @@ elseif ($mod=='post' AND $act=='update'){
 				$dbusersql = DATABASE_USER;
 				$dbpasswordsql = DATABASE_PASS;
 				$dbnamesql = DATABASE_NAME;
-				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
-				mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql,$dbnamesql) or die(mysqli_connect_error());
+				//mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 				mysqli_query("UPDATE tag SET count=count+1 WHERE tag_seo='$tag_seo[$i]'");
 			}
 			header('location:../../admin.php?mod='.$mod);

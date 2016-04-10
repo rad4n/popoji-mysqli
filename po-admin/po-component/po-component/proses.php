@@ -28,8 +28,8 @@ if ($mod=='component' AND $act=='delete'){
 			$dbusersql = DATABASE_USER;
 			$dbpasswordsql = DATABASE_PASS;
 			$dbnamesql = DATABASE_NAME;
-			$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
-			mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+			$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql,$dbnamesql) or die(mysqli_connect_error());
+			//mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 			$dirPath = "../../po-component/$component";
 			$deletef = deleteDir($dirPath);
 			$queryf = "DROP TABLE IF EXISTS `$dbnamesql`.`$table_name`";
@@ -122,8 +122,8 @@ elseif ($mod=='component' AND $act=='importtable'){
 				$dbusersql = DATABASE_USER;
 				$dbpasswordsql = DATABASE_PASS;
 				$dbnamesql = DATABASE_NAME;
-				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
-				mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql,$dbnamesql) or die(mysqli_connect_error());
+				//mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 				foreach($sql_contents as $query){
 					$result = mysqli_query($query);
 					if (!$result){

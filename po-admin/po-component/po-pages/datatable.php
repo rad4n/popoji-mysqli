@@ -23,17 +23,17 @@ if($currentRoleAccess->read_access == "Y"){
     $gaSql['db']         = DATABASE_NAME;
     $gaSql['server']     = DATABASE_HOST;
 
-    $gaSql['link'] =  mysqli_pconnect( $gaSql['server'], $gaSql['user'], $gaSql['password']  ) or
+    $gaSql['link'] =  mysqli_connect( $gaSql['server'], $gaSql['user'], $gaSql['password'],$gaSql['db']  ) or
         die( 'Could not open connection to server' );
 
-    mysqli_select_db( $gaSql['db'], $gaSql['link'] ) or
-        die( 'Could not select database '. $gaSql['db'] );
+    //mysqli_select_db( $gaSql['db'], $gaSql['link'] ) or
+        //die( 'Could not select database '. $gaSql['db'] );
 
     $sLimit = "";
     if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
     {
-        $sLimit = "LIMIT ".mysqli_real_escape_string( $_GET['iDisplayStart'] ).", ".
-            mysqli_real_escape_string( $_GET['iDisplayLength'] );
+        $sLimit = "LIMIT ".mysqli_real_escape_string($gaSql['link'], $_GET['iDisplayStart'] ).", ".
+            mysqli_real_escape_string($gaSql['link'], $_GET['iDisplayLength'] );
     }
 
     $sOrder = "";
@@ -45,7 +45,7 @@ if($currentRoleAccess->read_access == "Y"){
             if ( $_GET[ 'bSortable_'.intval($_GET['iSortCol_'.$i]) ] == "true" )
             {
                 $sOrder .= $aColumns[ intval( $_GET['iSortCol_'.$i] ) ]."
-                    ".mysqli_real_escape_string( $_GET['sSortDir_'.$i] ) .", ";
+                    ".mysqli_real_escape_string($gaSql['link'], $_GET['sSortDir_'.$i] ) .", ";
             }
         }
 
@@ -62,7 +62,7 @@ if($currentRoleAccess->read_access == "Y"){
         $sWhere = "WHERE (";
         for ( $i=0 ; $i<count($aColumns) ; $i++ )
         {
-            $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string( $_GET['sSearch'] )."%' OR ";
+            $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($gaSql['link'], $_GET['sSearch'] )."%' OR ";
         }
         $sWhere = substr_replace( $sWhere, "", -3 );
         $sWhere .= ')';
@@ -80,7 +80,7 @@ if($currentRoleAccess->read_access == "Y"){
             {
                 $sWhere .= " AND ";
             }
-            $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($_GET['sSearch_'.$i])."%' ";
+            $sWhere .= $aColumns[$i]." LIKE '%".mysqli_real_escape_string($gaSql['link'],$_GET['sSearch_'.$i])."%' ";
         }
     }
 
@@ -91,12 +91,12 @@ if($currentRoleAccess->read_access == "Y"){
         $sOrder
         $sLimit
     ";
-    $rResult = mysqli_query( $sQuery, $gaSql['link'] ) or die(mysqli_error());
+    $rResult = mysqli_query($gaSql['link'], $sQuery ) or die(mysqli_connect_error());
 
     $sQuery = "
         SELECT FOUND_ROWS()
     ";
-    $rResultFilterTotal = mysqli_query( $sQuery, $gaSql['link'] ) or die(mysqli_error());
+    $rResultFilterTotal = mysqli_query($gaSql['link'], $sQuery) or die(mysqli_connect_error());
     $aResultFilterTotal = mysqli_fetch_array($rResultFilterTotal);
     $iFilteredTotal = $aResultFilterTotal[0];
 
@@ -104,7 +104,7 @@ if($currentRoleAccess->read_access == "Y"){
         SELECT COUNT(".$sIndexColumn.")
         FROM   $sTable
     ";
-    $rResultTotal = mysqli_query( $sQuery, $gaSql['link'] ) or die(mysqli_error());
+    $rResultTotal = mysqli_query(  $gaSql['link'],$sQuery ) or die(mysqli__connect_error());
     $aResultTotal = mysqli_fetch_array($rResultTotal);
     $iTotal = $aResultTotal[0];
 

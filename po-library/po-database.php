@@ -121,7 +121,7 @@ class PoTable {
 	}
 
 	function updateBy($field, $value, array $data){
-		$where = "".$field."='".mysqli_real_escape_string($value, PoConnect::getConnection())."'";
+		$where = "".$field."='".mysqli_real_escape_string(PoConnect::getConnection(),$value)."'";
 		$this->update($data, $where);
 	}
 

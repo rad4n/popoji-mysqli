@@ -19,8 +19,8 @@ if ($mod2=='home' AND $act2=='backup'){
 		$dbusersql = DATABASE_USER;
 		$dbpasswordsql = DATABASE_PASS;
 		$dbnamesql = DATABASE_NAME;
-		$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
-		mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+		$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql,$dbnamesql) or die(mysqli_connect_error());
+		//mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 
 		$tables = '*';
 
@@ -100,8 +100,8 @@ elseif ($mod=='home' AND $act=='restore'){
 				$dbusersql = DATABASE_USER;
 				$dbpasswordsql = DATABASE_PASS;
 				$dbnamesql = DATABASE_NAME;
-				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql) or die(mysqli_error());
-				mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
+				$connection = mysqli_connect($dbhostsql, $dbusersql, $dbpasswordsql,$dbnamesql) or die(mysqli_connect_error());
+				//mysqli_select_db($dbnamesql, $connection) or die(mysqli_error());
 
 				foreach($sql_contents as $query){
 					$result = mysqli_query($query);
